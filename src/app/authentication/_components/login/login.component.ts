@@ -84,10 +84,13 @@ export class LoginComponent implements OnInit, AfterViewInit {
           this.alertService.error('err_not_active', {autoClose: true});
         } else {
           this.spinner.hide();
+          console.log(response)
           this.loggerService.log('response', response);
           localStorage.setItem('user_token', response.token);
           localStorage.setItem('user_id', response.id);
           localStorage.setItem('user_name', response.name);
+          localStorage.setItem('region_id', response.region.id);
+          localStorage.setItem('region_name', response.region.name);
           localStorage.setItem('user_username', response.username);
           this.router.navigate([this.returnUrl]);
         }
