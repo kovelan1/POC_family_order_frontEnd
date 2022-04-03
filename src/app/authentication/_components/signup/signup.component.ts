@@ -24,6 +24,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
   signupFormShow = false;
   allCustomers: any;
+  regions:any;
 
   constructor(private apiManagerService: ApiManagerService,
               private formBuilder: FormBuilder,
@@ -38,12 +39,16 @@ export class SignupComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+
+    this.getAllRegions()
+
     this.registerForm = this.formBuilder.group({
       name: ['', Validators.required],
       username: ['', Validators.required],
       password: ['', Validators.required],
       fid: ['', Validators.required],
       mid: ['', Validators.required],
+      regionId: ['', Validators.required],
       type: ['2'],
       role: ['customer']
     });
@@ -101,6 +106,18 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.loggerService.log('error', error);
         this.alertService.error(error.error.message, {autoClose: true});
       });
+  }
+
+  getAllRegions(){
+    this.apiManagerService.getAllRegions().subscribe((response: any) => {
+      this.regions = response;
+      console.log(this.regions);
+    },
+    error => {
+      this.spinner.hide();
+      this.loggerService.log('error', error);
+      this.alertService.error(error.error.message, {autoClose: true});
+    });
   }
 
   showSignupForm() {

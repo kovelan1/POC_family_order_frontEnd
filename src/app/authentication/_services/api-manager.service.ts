@@ -42,6 +42,12 @@ export class ApiManagerService {
     );
   }
 
+  public getAllRegions(): any {
+    return this.http.get(this.endpoints.get_all_regions).pipe(
+      catchError(this.handleError),
+    );
+  }
+
   private handleError(error: HttpErrorResponse): any {
     return throwError(error);
   }

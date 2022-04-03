@@ -44,6 +44,13 @@
 
             <br>
             <div class="">
+              <select class="form-control"  formControlName="regionId">
+                  <option value="" selected disabled>Choose Region</option>
+                  <option *ngFor="let region of regions" value="{{region.id}}">{{region.name}}</option>
+              </select>
+            </div>
+            <br>
+            <div class="">
               <select class="form-control"  formControlName="fid">
                   <option value="" selected disabled>Choose Father</option>
                   <option *ngFor="let customer of allCustomers" value="{{customer.id}}">{{customer.name}}</option>

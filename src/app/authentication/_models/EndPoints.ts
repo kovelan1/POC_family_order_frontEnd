@@ -8,4 +8,6 @@ export class EndPoints {
   public readonly update_password = this.baseUrl + 'api/auth/reset-password';
   public readonly subscriber_registration = this.baseUrl + 'api/auth/signup';
   public readonly get_all_customers = this.baseUrl + 'api/auth/get/all/customers';
+
+  public readonly get_all_regions = this.baseUrl + 'api/region/all';
 }
