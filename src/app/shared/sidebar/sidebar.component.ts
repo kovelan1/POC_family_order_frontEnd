@@ -1,5 +1,5 @@
 import {Component, AfterViewInit, OnInit} from '@angular/core';
-import {ROUTES} from './menu-items';
+import {ADMINS_ROUTES,CUSTOMER_ROUTES} from './menu-items';
 import {RouteInfo} from './sidebar.metadata';
 import {Router, ActivatedRoute} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -46,6 +46,11 @@ export class SidebarComponent implements OnInit {
 
   // End open close
   ngOnInit() {
-    this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem);
+    if (localStorage.getItem('user_roles').includes("ROLE_ADMIN") || localStorage.getItem('user_roles').includes("ROLE_SUPER_ADMIN")) {
+      this.sidebarnavItems = ADMINS_ROUTES.filter(sidebarnavItem => sidebarnavItem);
+    }else{
+      this.sidebarnavItems = CUSTOMER_ROUTES.filter(sidebarnavItem => sidebarnavItem);
+    }
+    
   }
 }

@@ -92,6 +92,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
           localStorage.setItem('region_id', response.region.id);
           localStorage.setItem('region_name', response.region.name);
           localStorage.setItem('user_username', response.username);
+          localStorage.setItem('user_roles', response.roles);
           this.router.navigate([this.returnUrl]);
         }
       },

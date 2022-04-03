@@ -3,6 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {FullComponent} from './layouts/full/full.component';
 import {BlankComponent} from './layouts/blank/blank.component';
 import {AuthGuard} from './_guards/auth.guard';
+import {UserGuard} from './_guards/user.guard';
 import {ManageCategoryComponent} from "./category/manage-category/manage-category.component";
 import {RegionComponentComponent} from "./region/region-component/region-component.component";
 import { ProductComponentComponent } from './product/product-component/product-component.component';
@@ -27,17 +28,17 @@ export const Approutes: Routes = [
       {
         path: 'manage-category',
         component: ManageCategoryComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard,UserGuard]
       },
       {
         path: 'manage-region',
         component: RegionComponentComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard,UserGuard]
       },
       {
         path: 'manage-product',
         component: ProductComponentComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard,UserGuard]
       },
       {
         path: 'manage-order',
