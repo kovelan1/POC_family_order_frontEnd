@@ -1,0 +1,93 @@
+<ngx-spinner fullScreen="false">
+  <p style="font-size: 20px; color: white">{{'processing' | translate}}</p>
+</ngx-spinner>
+<alert fade="true"></alert>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card shadow-lg card-body">
+      <div class="form-group row">
+        <div class="col-sm-12">
+          <p>Place Order</p>
+        </div>
+      </div>
+      <div [formGroup]="productForm">
+        <div formArrayName="selectedProducts">
+          <div class="form-group row" *ngFor="let produ of selectedProducts().controls; let i=index"
+            [formGroupName]="i">
+            <div class="col-sm-4 mb-3">
+              <select class="form-control" formControlName="product_id">
+                <option value="" disabled selected>Select Product</option>
+                <option *ngFor="let product of products" value="{{product.id}}">{{ product.name}}</option>
+              </select>
+            </div>
+            <div class="col-sm-4 mb-3">
+              <input class="form-control" placeholder="Quntity" formControlName="qty"
+                (change)="setProductTotal(produ,i)" (keyup)="setProductTotal(produ,i)">
+            </div>
+            <div class="col-sm-2 mb-3">
+              <input class="form-control" disabled placeholder="Price..." value="{{selectedProducts().value[i].price}}"
+                formControlName="price">
+            </div>
+            <div class="col-sm-2 mb-3">
+              <button class="btn bg-base-color btn-rounded text-white" (click)="removeProduct(i)">
+                remove product
+              </button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button class="btn mr-3 bg-base-color btn-rounded text-white" (click)="addProduct()">
+            add product
+          </button>
+          <button class="btn bg-base-color2 btn-rounded text-white" (click)="createOrder()">
+            place order
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- table -->
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card shadow-lg card-body">
+      <table datatable [dtOptions]="dtOptions" style="width: 100% !important;"
+             class=" table-hover table-bordered">
+        <thead class="bg-base-color text-white text-center">
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th >Product and Quantity</th>
+          
+          <th>Price</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="orders?.length != 0">
+        <tr *ngFor="let order of orders" class="text-center">
+          <td>{{ order.id }}</td>
+          <td>{{order.order_date}}</td>
+          <td>
+            <table  style="width: 100% !important;"  class="table-borderless">
+              <tr *ngFor="let prod_order of order.orderedProducts">
+                <td>{{prod_order.name}}</td>
+                <td>{{prod_order.price}}</td>
+                <td>{{prod_order.price}}</td>
+            </tr>
+            </table>
+          </td>
+          <td>{{order.total}}</td>
+          <!-- <td><span *ngFor="let cat of prod.category" class="badge badge-pill bg-dark text-white"
+                    style="margin-right: 10px">{{ cat.name }}</span></td> -->
+          <td>
+            <buttton class="btn btn-rounded btn-primary" >Edit Order</buttton>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

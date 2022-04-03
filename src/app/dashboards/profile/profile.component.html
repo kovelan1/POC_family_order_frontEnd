@@ -1,0 +1,111 @@
+<ngx-spinner fullScreen="false">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+<alert></alert>
+<div class="row">
+
+  <div class="col-12 col-lg-7">
+    <div class="m-t-20 card shadow" style="padding: 20px">
+      <div class="form-group row">
+        <div class="col-6">
+          <label>{{'business' | translate}}</label>
+          <input class="form-control form-control-lg" type="text" #business
+            value="{{userInfoBody.business}}"
+            placeholder="{{'business' | translate}}">
+        </div>
+        <div class="col-6">
+          <label>{{'identity' | translate}}</label>
+          <input class="form-control form-control-lg" type="text" #cif
+            value="{{userInfoBody.cif}}"
+            placeholder="{{'identity' | translate}}">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-6">
+          <label>{{'first_name' | translate}} <span class="text-danger">*</span></label>
+          <input class="form-control form-control-lg text-base" type="text" #first_name name="first_name"
+            value="{{userInfoBody.first_name}}"
+            placeholder="{{'first_name' | translate}}"/>
+        </div>
+        <div class="col-6">
+          <label>{{'last_name' | translate}} <span class="text-danger">*</span></label>
+          <input class="form-control form-control-lg" type="text" #last_name
+            value="{{userInfoBody.last_name}}"
+            placeholder="{{'last_name' | translate}}">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-6">
+          <label>{{'contact_number' | translate}} <span class="text-danger">*</span></label>
+          <input class="form-control form-control-lg" type="text" #phone
+            value="{{userInfoBody.phone}}"
+            placeholder="{{'contact_number' | translate}}">
+        </div>
+        <div class="col-6">
+          <label>{{'address' | translate}} <span class="text-danger">*</span></label>
+          <input class="form-control form-control-lg text-base" type="text" #address name="address"
+            value="{{userInfoBody.address}}"
+            placeholder="{{'address' | translate}}">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-6">
+          <label>{{'zip_code' | translate}} <span class="text-danger">*</span></label>
+          <input class="form-control form-control-lg text-base" type="text" #zip_code name="zip_code"
+            value="{{userInfoBody.postal_code}}"
+            placeholder="{{'zip_code' | translate}}">
+        </div>
+        <div class="col-6">
+          <label>{{'city' | translate}} <span class="text-danger">*</span></label>
+          <input class="form-control form-control-lg text-base" type="text" #city name="city"
+            value="{{userInfoBody.city}}"
+            placeholder="{{'city' | translate}}">
+        </div>
+      </div>
+
+      <div class="form-group text-center ">
+        <div class="col-xs-12">
+          <button (click)="doUpdate(first_name.value, last_name.value,business.value, cif.value ,phone.value, address.value, zip_code.value, city.value)"
+            class="btn btn-block btn-md btn-rounded btn-default text-white font-weight-bold">
+            {{'update_profile' | translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-5">
+    <form autocomplete="new-password">
+      <div class="form-horizontal m-t-20 card shadow" style="padding: 20px">
+        <div class="form-group row">
+          <div class="col-12">
+            <label>{{'old_password' | translate}} <span class="text-danger">*</span></label>
+            <input class="form-control form-control-lg text-base" type="password" #old_pass name="old_pass">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-12">
+            <label>{{'new_password' | translate}} <span class="text-danger">*</span></label>
+            <input class="form-control form-control-lg text-base" type="password" #new_pass name="new_pass">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-12">
+            <label>{{'confirm_password' | translate}} <span class="text-danger">*</span></label>
+            <input class="form-control form-control-lg text-base" type="password" #confirm_pass name="confirm_pass">
+          </div>
+        </div>
+
+        <div class="form-group text-center ">
+          <div class="col-xs-12">
+            <button (click)="updatePassword(old_pass.value, new_pass.value,confirm_pass.value)"
+                    class="btn btn-block btn-md btn-rounded btn-default text-white font-weight-bold">
+              {{'update_password' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
