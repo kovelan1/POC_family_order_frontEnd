@@ -60,26 +60,30 @@
         <tr>
           <th>ID</th>
           <th>Date</th>
+          <th>User</th>
+          <th>Region</th>
           <th >Product and Quantity</th>
           
-          <th>Price</th>
+          <th>Total</th>
           <th>Action</th>
         </tr>
         </thead>
         <tbody *ngIf="orders?.length != 0">
         <tr *ngFor="let order of orders" class="text-center">
           <td>{{ order.id }}</td>
-          <td>{{order.order_date}}</td>
+          <td>{{order.order_date | date: 'yyyy-MM-dd'}}</td>
+          <td>{{order.user.name}}</td>
+          <td>{{order.region.name}}</td>
           <td>
             <table  style="width: 100% !important;"  class="table-borderless">
-              <tr *ngFor="let prod_order of order.orderedProducts">
-                <td>{{prod_order.name}}</td>
-                <td>{{prod_order.price}}</td>
-                <td>{{prod_order.price}}</td>
+              <tr *ngFor="let prod_order of order.orderedProducts" class="text-left">
+                <td>{{prod_order.product.name}}</td>
+                <td> $ {{prod_order.price}}</td>
+                <td>{{prod_order.qty}}</td>
             </tr>
             </table>
           </td>
-          <td>{{order.total}}</td>
+          <td>$ {{order.total}}</td>
           <!-- <td><span *ngFor="let cat of prod.category" class="badge badge-pill bg-dark text-white"
                     style="margin-right: 10px">{{ cat.name }}</span></td> -->
           <td>

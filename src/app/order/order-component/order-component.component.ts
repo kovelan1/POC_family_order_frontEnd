@@ -14,6 +14,8 @@ class DataTablesResponse {
   recordsTotal: number;
 }
 
+
+
 @Component({
   selector: 'app-order-component',
   templateUrl: './order-component.component.html',
@@ -23,7 +25,9 @@ class DataTablesResponse {
 
 export class OrderComponentComponent implements OnInit {
 
-  dtOptions: DataTables.Settings = {};
+  dtOptions: DataTables.Settings = {
+    
+  };
   products: any;
   orders:any;
   productCount:number;
@@ -56,6 +60,8 @@ export class OrderComponentComponent implements OnInit {
     this.productCount=2;
     this.addProduct();
     this.getAllProducts();
+    // this.getAllOrders();
+
     this.updateContainer = "hidden";
     const that = this;
     this.dtOptions = {
@@ -63,8 +69,10 @@ export class OrderComponentComponent implements OnInit {
       pageLength: 10,
       serverSide: true,
       processing: true,
+
+      // data:that.orders,
       ajax: (dataTablesParameters: any, callback) => {
-        that.http.post<DataTablesResponse>(this.endpoints.getOrders,
+        that.http.post<DataTablesResponse>(this.getuserBasedQuery(),
           dataTablesParameters, {}
         ).subscribe(resp => {
           that.orders = resp.data;
@@ -78,15 +86,36 @@ export class OrderComponentComponent implements OnInit {
       },
       searching: false,
       columns: [
-        {data: 'id'},
+        {data: 'id'
+      },
         {data: 'total'},
-        {data: 'region'},
+        {data: 'user'},
         {data:'order_date'},
         {data:'orderedProducts'}
       ]
     };
   }
 
+  getuserBasedQuery(){
+    if(localStorage.getItem("user_roles")==="ROLE_SUPER_ADMIN"){
+      console.log(1)
+      return this.endpoints.getOrders;
+    }
+    else if(localStorage.getItem("user_roles")==="ROLE_ADMIN"){
+      console.log(2)
+      return this.endpoints.getOrdersByregion+localStorage.getItem("region_id")
+    }else if(localStorage.getItem("user_roles")==="ROLE_CUSTOMER"){
+      console.log(3)
+      return this.endpoints.getOrdersByCustomer+localStorage.getItem("user_id")
+    }
+  }
+
+  getAllOrders(){
+    this.apiService.getAll().subscribe((response:any)=>{
+      this.orders=response;
+    
+    })
+  }
   createOrder() {
     this.spinner.show();
     const data = {

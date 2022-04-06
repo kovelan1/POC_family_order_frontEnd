@@ -21,4 +21,7 @@ export class EndPoints {
   public readonly getRegions = this.baseUrl + 'api/region/all';
   public readonly createAdmin = this.baseUrl + 'api/user/admin/create';
   public readonly getUsersByRole = this.baseUrl + 'api/user/all/byRole';
+
+  public readonly getUsersForAdmin = this.baseUrl + 'api/user/all/forAdmin/';
+
 }

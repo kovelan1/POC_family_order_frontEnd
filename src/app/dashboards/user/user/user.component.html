@@ -2,7 +2,7 @@
     <p style="font-size: 20px; color: white">{{'processing' | translate}}</p>
 </ngx-spinner>
 <alert fade="true"></alert>
-<div class="row">
+<div class="row {{ adminContainer}}">
     <div class="col-sm-12">
         <div class="card shadow-lg card-body">
             <div class="form-group row">
@@ -41,9 +41,12 @@
     <div class="col-sm-12">
       <div class="card shadow-lg card-body">
         <div class="col-sm-6">
+          <h3>Users</h3>
+        </div>
+        <div class="col-sm-6 {{ adminContainer}}">
             <select class="form-control" #user_role_list (change)="filterRole(user_role_list.value)">
-                <option value="" disabled selected>Select Role</option>
-                <option value="ROLE_ADMIN">Admin</option>
+                
+                <option value="ROLE_ADMIN" selected>Admin</option>
                 <option value="ROLE_CUSTOMER">Customer</option>
               </select>
         </div>
