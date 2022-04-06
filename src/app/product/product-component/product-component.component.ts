@@ -25,11 +25,7 @@ export class ProductComponentComponent implements OnInit {
   products: any;
   parentCategories: any;
   subCategories:any;
-  category:{
-    id:any;
-    name:any;
-    childCategory:any[];
-  };
+  category:any [];
   product: any;
   updateContainer: string;
   constructor(
@@ -95,7 +91,9 @@ export class ProductComponentComponent implements OnInit {
     )
   }
 
-  updateProduct(productId:number, name: string, price:number, categoryID: number){
+  updateProduct(productId:any, name: string, price:number, categoryID: number){
+    console.log("ProdcutId"+ productId);
+    
     this.spinner.show();
     const data = {
       "name": name,
@@ -122,6 +120,27 @@ export class ProductComponentComponent implements OnInit {
         this.product = prod;
         console.log(prod)
       
+  }
+
+  getProductById(id:any){
+   
+    this.spinner.show();
+    this.apiService.getById(id).subscribe((response:any)=>{
+      console.log(response);
+      this.product=response;
+      if(this.product.parent_cat!=null){
+        this.category=this.product.parent_cat.childCategory;
+      }else{
+        this.category.push(this.product.product_details.category);
+      }
+      
+    },
+    error => {
+      this.spinner.hide();
+      this.loggerService.log('error', error);
+    }
+    )
+    this.spinner.hide();
   }
   
   getAllParentCategories(){

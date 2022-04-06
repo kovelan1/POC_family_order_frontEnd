@@ -16,6 +16,9 @@ export class EndPoints {
 
   public readonly createProduct = this.baseUrl + 'api/product/create';
   public readonly getProducts = this.baseUrl + 'api/product/get/all';
+  
+  public readonly getProductById = this.baseUrl + 'api/product/get/';
+
   public readonly updateProduct = this.baseUrl + 'api/product/update/';
   public readonly getProductByCat = this.baseUrl + 'api/product/get/';
   public readonly getProductsNopage = this.baseUrl + 'api/product/all';
