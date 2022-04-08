@@ -37,6 +37,12 @@ export class ApiManagerService {
     );
   }
 
+  public getById(id): any {
+    return this.http.get(this.endpoints.getProductById+id).pipe(
+      catchError(this.handleError),
+    );
+  }
+
   // public delete(id): any {
   //   return this.http.get(this.endpoints.getSpecificCat + id).pipe(
   //     catchError(this.handleError),
