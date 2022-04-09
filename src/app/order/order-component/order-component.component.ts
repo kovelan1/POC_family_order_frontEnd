@@ -8,6 +8,8 @@ import {ApiManagerService} from '../api-manager.service';
 import {FormGroup, FormControl, FormArray, FormBuilder} from '@angular/forms';
 import {DataTableDirective} from 'angular-datatables';
 import {Subject} from 'rxjs';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {formatDate} from '@angular/common';
 
 class DataTablesResponse {
     data: any[];
@@ -28,6 +30,13 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
     dtElement: DataTableDirective;
     dtOptions: DataTables.Settings = {};
     dtTrigger: Subject<any> = new Subject();
+
+    displayMonths = 1;
+    navigation = 'select';
+    showWeekNumbers = false;
+    outsideDays = 'visible';
+    fromDate: NgbDateStruct;
+    toDate: NgbDateStruct;
 
     products: any;
     regions: any;
@@ -64,7 +73,8 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
         this.getAllProducts();
         this.getAllRegions();
         this.updateContainer = 'hidden';
-        this.loadDatatables('r_id=1');
+
+        this.loadDatatables('r_id=1&from=' + '2020-01-01' + '&to=' +    formatDate(new Date(), 'yyyy-MM-dd', 'en'));
     }
 
     ngAfterViewInit(): void {
@@ -140,7 +150,7 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
     setProductTotal(produc: any, i: number) {
         console.log(i);
         const filterResult = this.products.filter(prod => {
-            return prod.id === produc.value.product_id;
+            return prod.id == produc.value.product_id;
         });
 
         this.selectedProducts().value[i].price = filterResult[0].price * produc.value.qty;
@@ -174,14 +184,19 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
         return sum;
     }
 
-    filterByRegion(value: string) {
+    filterBy(regionId: string) {
+
+        const from = this.fromDate.year + '-' + this.fromDate.month + '-' + this.fromDate.day;
+        const to = this.toDate.year + '-' + this.toDate.month + '-' + this.toDate.day;
+
+        console.log(from);
+        console.log(to);
+
         this.spinner.show();
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-            console.log(value);
-            // Destroy the table first
+            console.log(regionId);
             dtInstance.destroy();
-            // Call the dtTrigger to rerender again
-            this.loadDatatables('r_id=' + value);
+            this.loadDatatables('r_id=' + regionId + '&from=' + from + '&to=' + to);
             setTimeout(() => {
                 this.dtTrigger.next();
                 this.spinner.hide();

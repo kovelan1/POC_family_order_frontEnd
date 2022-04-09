@@ -44,11 +44,8 @@ export class ProductComponentComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
         this.updateContainer = 'hidden';
         this.getAllParentCategories();
-        const that = this;
-        this.alertService.success('Category Created Successfully');
         this.loadDatatables();
     }
 
@@ -64,16 +61,6 @@ export class ProductComponentComponent implements OnInit {
                 this.spinner.hide();
                 console.log(response);
                 this.alertService.success('Product Created Successfully');
-                this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-                    // Destroy the table first
-                    dtInstance.destroy();
-                    // Call the dtTrigger to rerender again
-                    this.loadDatatables();
-                    setTimeout(() => {
-                        this.dtTrigger.next();
-                        this.spinner.hide();
-                    }, 500);
-                });
             },
             error => {
                 this.spinner.hide();
@@ -147,11 +134,10 @@ export class ProductComponentComponent implements OnInit {
     }
 
     getSubcatByParent(catId: any) {
-        console.log('comming.....');
         console.log(catId);
 
         const filterResult = this.parentCategories.filter(cate => {
-            return cate.id === catId;
+            return cate.id == catId;
         });
 
         this.category = filterResult[0].childCategory;

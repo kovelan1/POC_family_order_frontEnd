@@ -32,18 +32,18 @@
                                    formControlName="price">
                         </div>
                         <div class="col-sm-2 mb-3">
-                            <button class="btn bg-base-color btn-rounded text-white" (click)="removeProduct(i)">
-                                remove product
+                            <button class="btn bg-danger btn-rounded text-white" (click)="removeProduct(i)">
+                                Remove product
                             </button>
                         </div>
                     </div>
                 </div>
                 <div>
                     <button class="btn mr-3 bg-base-color btn-rounded text-white" (click)="addProduct()">
-                        add product
+                        Add product
                     </button>
                     <button class="btn bg-base-color2 btn-rounded text-white" (click)="createOrder()">
-                        place order
+                        Place order
                     </button>
                 </div>
             </div>
@@ -58,8 +58,34 @@
             <option value="{{reg.id}}" *ngFor="let reg of regions">{{reg.name}}</option>
         </select>
     </div>
+    <div class="col-sm-3">
+        <div class="col-12">
+            <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd"
+                       name="fromDate" [displayMonths]="displayMonths" [navigation]="navigation"
+                       [outsideDays]="outsideDays"
+                       [showWeekNumbers]="showWeekNumbers" [(ngModel)]="fromDate" ngbDatepicker #from="ngbDatepicker">
+                <button class="btn btn-outline-secondary calendar" (click)="from.toggle()" type="button">
+                    <i class="fa fa-calendar-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 
-    <div class="col-sm-3" (click)="filterByRegion(regionId.value)">
+    <div class="col-sm-3">
+        <div class="col-12">
+            <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd"
+                       name="toDate" [displayMonths]="displayMonths" [navigation]="navigation"
+                       [outsideDays]="outsideDays"
+                       [showWeekNumbers]="showWeekNumbers" [(ngModel)]="toDate" ngbDatepicker #to="ngbDatepicker">
+                <button class="btn btn-outline-secondary calendar" (click)="to.toggle()" type="button">
+                    <i class="fa fa-calendar-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3" (click)="filterBy(regionId.value)">
         <button class="btn btn-primary"><i class="fa fa-filter"></i> Filter</button>
     </div>
 </div>
@@ -86,10 +112,10 @@
                     <td>{{ order.id }}</td>
                     <td>{{order.order_date}}</td>
                     <td>
-                        <table style="width: 100% !important;" class="table-borderless">
+                        <table style="width: 100% !important;" class="table table-hover table-striped">
                             <tr *ngFor="let prod_order of order.orderedProducts">
-                                <td>{{prod_order.name}}</td>
-                                <td>{{prod_order.price}}</td>
+                                <td>{{prod_order.product.name}}</td>
+                                <td>{{prod_order.qty}}</td>
                                 <td>{{prod_order.price}}</td>
                             </tr>
                         </table>
