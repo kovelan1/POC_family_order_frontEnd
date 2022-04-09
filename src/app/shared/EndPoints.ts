@@ -1,4 +1,5 @@
 import {environment} from "../../environments/environment";
+import { OnInit} from '@angular/core';
 
 export class EndPoints {
   private baseUrl = environment.base_url;
@@ -16,6 +17,9 @@ export class EndPoints {
 
   public readonly createProduct = this.baseUrl + 'api/product/create';
   public readonly getProducts = this.baseUrl + 'api/product/get/all';
+  
+  public readonly getProductById = this.baseUrl + 'api/product/get/';
+
   public readonly updateProduct = this.baseUrl + 'api/product/update/';
   public readonly getProductByCat = this.baseUrl + 'api/product/get/';
   public readonly getProductsNopage = this.baseUrl + 'api/product/all';
@@ -23,4 +27,7 @@ export class EndPoints {
   public readonly createOrder = this.baseUrl + 'api/order/create';
   public readonly getOrders = this.baseUrl + 'api/order/get/all';
   public readonly updateOrder = this.baseUrl + 'api/order/update/';
+
+  public readonly getOrdersByregion = this.baseUrl + 'api/order/get/region/';
+  public readonly getOrdersByCustomer = this.baseUrl + 'api/order/get/customer/';
 }

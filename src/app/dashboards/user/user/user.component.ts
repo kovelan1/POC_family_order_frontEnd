@@ -6,6 +6,7 @@ import {AlertService} from '../../_alert/alert.service';
 import {EndPoints} from '../../_models/EndPoints';
 import {ApiManagerService} from '../../_services/api-manager.service';
 
+
 class DataTablesResponse {
     data: any[];
     draw: number;
@@ -24,9 +25,11 @@ export class UserComponent implements OnInit {
     regions: any;
     users: any;
     admins: any;
+    customers: any;
     parentCategories: any;
     region: any;
-    updateContainer: string;
+    adminContainer: string;
+    customerContainer: string;
 
     constructor(
         private apiService: ApiManagerService,
@@ -49,10 +52,13 @@ export class UserComponent implements OnInit {
             serverSide: true,
             processing: true,
             ajax: (dataTablesParameters: any, callback) => {
-                that.http.post<DataTablesResponse>(this.endpoints.getUsersByRole,
+                that.http.post<DataTablesResponse>(this.getuserBasedQuery(),
                     dataTablesParameters, {}
                 ).subscribe(resp => {
                     that.users = resp.data;
+                    if (localStorage.getItem('user_roles') === 'ROLE_ADMIN') {
+                        this.users = this.users.filter(u => u.roles.some(r => r.name === 'ROLE_CUSTOMER'));
+                    }
                     console.log(resp.data);
 
                     callback({
@@ -70,6 +76,85 @@ export class UserComponent implements OnInit {
                 {data: 'roles'}],
         };
     }
+
+    getByRole(role) {
+        const that = this;
+        this.dtOptions = {
+            pagingType: 'simple_numbers',
+            pageLength: 5,
+            serverSide: true,
+            processing: true,
+            ajax: (dataTablesParameters: any, callback) => {
+                that.http.post<DataTablesResponse>('api/user/all/forAdmin?roleid = ' + role,
+                    dataTablesParameters, {}
+                ).subscribe(resp => {
+                    that.admins = resp.data;
+                    console.log(resp.data);
+
+                    callback({
+                        recordsTotal: resp.recordsTotal,
+                        recordsFiltered: resp.recordsFiltered,
+                        data: []
+                    });
+                });
+            },
+            searching: false,
+            columns: [
+                {data: 'id'},
+                {data: 'name'},
+                {data: 'region'},
+                {data: 'roles'}],
+        };
+    }
+
+    getAllCustomers() {
+
+        const that = this;
+
+        this.dtOptions = {
+            pagingType: 'simple_numbers',
+            pageLength: 5,
+            serverSide: true,
+            processing: true,
+            ajax: (dataTablesParameters: any, callback) => {
+                that.http.post<DataTablesResponse>(this.getuserBasedQuery() + 'customer',
+                    dataTablesParameters, {}
+                ).subscribe(resp => {
+                    that.customers = resp.data;
+                    console.log(resp.data);
+
+                    callback({
+                        recordsTotal: resp.recordsTotal,
+                        recordsFiltered: resp.recordsFiltered,
+                        data: []
+                    });
+                });
+            },
+            searching: false,
+            columns: [
+                {data: 'id'},
+                {data: 'name'},
+                {data: 'region'},
+                {data: 'roles'}],
+
+
+        };
+
+
+    }
+
+    getuserBasedQuery() {
+        if (localStorage.getItem('user_roles') === 'ROLE_SUPER_ADMIN') {
+            this.adminContainer = 'show';
+            this.customerContainer = 'show';
+            return this.endpoints.getUsersByRole;
+        } else if (localStorage.getItem('user_roles') === 'ROLE_ADMIN') {
+            this.adminContainer = 'hide';
+            this.customerContainer = 'show';
+            return this.endpoints.getUsersForAdmin + localStorage.getItem('user_id');
+        }
+    }
+
 
     getAllRegions() {
         this.apiService.getRegions().subscribe(
@@ -109,18 +194,16 @@ export class UserComponent implements OnInit {
     }
 
     filterRole(role: any) {
-        this.users = this.users.filter(u => u.roles.some(r => r.name === role));
-        console.log('on filter');
-
+        this.users = this.users.filter(u => u.roles.some(r => r.name == role));
         console.log(this.users);
     }
 
     adminFilter() {
-        this.admins = this.users.filter(u => u.roles.some(r => r.name === 'ROLE_ADMIN'));
+        this.admins = this.users.filter(u => u.roles.some(r => r.name == 'ROLE_ADMIN'));
     }
 
     customerFilter() {
-        this.admins = this.users.filter(u => u.roles.some(r => r.name === 'ROLE_ADMIN'));
+        this.admins = this.users.filter(u => u.roles.some(r => r.name == 'ROLE_ADMIN'));
     }
 
 }

@@ -1,106 +1,115 @@
 <ngx-spinner fullScreen="false">
-  <p style="font-size: 20px; color: white">{{'processing' | translate}}</p>
+    <p style="font-size: 20px; color: white">{{'processing' | translate}}</p>
 </ngx-spinner>
 <alert fade="true"></alert>
 <div class="row">
     <div class="col-sm-12">
-      <div class="card shadow-lg card-body">
-        <div class="form-group row" >
-          <div class="col-sm-12"><p>Create Product</p></div>
-          <div class="col-sm-3 mb-3">
-            <input class="form-control" placeholder="Product Name..." #prod_name>
-          </div>
-          <div class="col-sm-2 mb-3">
-            <input class="form-control" placeholder="Price..." #prod_price>
-          </div>
-          <div class="col-sm-2 mb-3">
-            <select class="form-control" #parent_cat (change)="getSubcatByParent(parent_cat.value)">
-              <option value="0" disabled selected>Parent Category</option>
-              <option *ngFor="let parentCat of parentCategories" value="{{parentCat.id}}">{{ parentCat.name}}</option>
-            </select>
-          </div>
-          <div class="col-sm-2 mb-3">
-            <select class="form-control" #sub_cat>
-              <option value="0" disabled selected>Sub Category</option>
-              <option *ngFor="let subCat of category" value="{{subCat.id}}">{{ subCat.name}}</option>
-            </select>
-          </div>
-    
-          <div class="col-sm-2 mb-3">
-            <button class="btn bg-base-color2 btn-rounded text-white"
-                    (click)="createProduct(prod_name.value,prod_price.value, sub_cat.value)">
-              <strong>Add Product</strong>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+        <div class="card shadow-lg card-body">
+            <div class="form-group row">
+                <div class="col-sm-12"><p>Create Product</p></div>
+                <div class="col-sm-3 mb-3">
+                    <input class="form-control" placeholder="Product Name..." #prod_name>
+                </div>
+                <div class="col-sm-2 mb-3">
+                    <input class="form-control" placeholder="Price..." #prod_price>
+                </div>
+                <div class="col-sm-2 mb-3">
+                    <select class="form-control" #parent_cat (change)="getSubcatByParent(parent_cat.value)">
+                        <option value="0" disabled selected>Parent Category</option>
+                        <option *ngFor="let parentCat of parentCategories"
+                                value="{{parentCat.id}}">{{ parentCat.name}}</option>
+                    </select>
+                </div>
+                <div class="col-sm-2 mb-3">
+                    <select class="form-control" #sub_cat>
+                        <option value="0" disabled selected>Sub Category</option>
+                        <option *ngFor="let subCat of category" value="{{subCat.id}}">{{ subCat.name}}</option>
+                    </select>
+                </div>
 
-  <div class="row {{ updateContainer}}" *ngIf="product != null">
+                <div class="col-sm-2 mb-3">
+                    <button class="btn bg-base-color2 btn-rounded text-white"
+                            (click)="createProduct(prod_name.value,prod_price.value, sub_cat.value)">
+                        <strong>Add Product</strong>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row {{ updateContainer}}" *ngIf="product != null">
     <div class="col-sm-12">
-      <div class="card shadow-lg card-body">
-        <div class="form-group row">
-          <div class="col-sm-12"><p>Update Product</p></div>
-          <div class="col-sm-4 mb-3"> 
-            <input class="form-control" placeholder="Product Name..." value="{{product.name}}" #prod_name_update>
-            <!-- <input class="form-control hidden" value="{{product.category.id}}" #cat_id_update> -->
-          </div>
-          <div class="col-sm-2 mb-3">
-            <input class="form-control" placeholder="Price..." #prod_price_update>
-          </div>
-            <div class="col-sm-3 mb-2">
-              <select class="form-control" #parent_cat_update (change)="getSubcatByParent(parent_cat_update.value)">
-                <option value="0" disabled selected>Select Parent Category</option>
-                <option *ngFor="let parentCat of parentCategories" value="{{parentCat.id}}">{{ parentCat.name}}</option>
-              </select>
-            </div>
-            <div class="col-sm-3 mb-2">
-              <select class="form-control" #sub_cat_update>
-                <option value="0" disabled selected>Select Sub Category</option>
-                <option *ngFor="let subCat of category" value="{{subCat.id}}">{{ subCat.name}}</option>
-              </select>
-            </div>
+        <div class="card shadow-lg card-body">
+            <div class="form-group row">
+                <div class="col-sm-12"><p>Update Product</p></div>
+                <div class="col-sm-4 mb-3">
+                    <input class="form-control" placeholder="Product Name..." value="{{product.product_details.name}}"
+                           #prod_name_update>
+                    <!-- <input class="form-control hidden" value="{{product.category.id}}" #cat_id_update> -->
+                </div>
+                <div class="col-sm-2 mb-3">
+                    <input class="form-control" placeholder="Price..." value="{{product.product_details.price}}"
+                           #prod_price_update>
+                </div>
+                <div class="col-sm-3 mb-2">
+                    <select class="form-control" #parent_cat_update
+                            (change)="getSubcatByParent(parent_cat_update.value)">
+                        <!-- <option value="0" disabled selected>Select Parent Category</option> -->
+                        <option *ngFor="let parentCat of parentCategories"
+                                [selected]="product.parent_cat.id !=null && parentCat.id===product.parent_cat.id"
+                                value="{{parentCat.id}}">{{ parentCat.name}}</option>
+                    </select>
+                </div>
+                <div class="col-sm-3 mb-2">
+                    <select class="form-control" #sub_cat_update>
+                        <option value="0" disabled selected>Select Sub Category</option>
+                        <option *ngFor="let subCat of category"
+                                [selected]="subCat.id===product.product_details.category.id"
+                                value="{{subCat.id}}">{{ subCat.name}}</option>
+                    </select>
+                </div>
 
-          <div class="col-sm-2 mb-3">
-            <button class="btn bg-base-color2 btn-rounded text-white"
-                    (click)="updateProduct(product.id,prod_name_update.value, prod_price_update.value,sub_cat_update.value)">
-              <strong>Update Product</strong>
-            </button>
-          </div>
+                <div class="col-sm-2 mb-3">
+                    <button class="btn bg-base-color2 btn-rounded text-white"
+                            (click)="updateProduct(product.product_details.id,prod_name_update.value, prod_price_update.value,sub_cat_update.value)">
+                        <strong>Update Product</strong>
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  
+</div>
+
 <div class="row">
     <div class="col-sm-12">
-      <div class="card shadow-lg card-body">
-        <table datatable [dtOptions]="dtOptions" style="width: 100% !important;"
-               class="table-striped table-hover table-bordered">
-          <thead class="bg-base-color text-white text-center">
-          <tr>
-            <th>ID</th>
-            <th>Product Name</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Action</th>
-          </tr>
-          </thead>
-          <tbody *ngIf="products?.length != 0">
-          <tr *ngFor="let prod of products" class="text-center">
-            <td>{{ prod.id }}</td>
-            <td>{{ prod.name }}</td>
-            <td>{{ prod.category.name }}</td>
-            <td>{{ prod.price }}</td>
-            <!-- <td><span *ngFor="let cat of prod.category" class="badge badge-pill bg-dark text-white"
-                      style="margin-right: 10px">{{ cat.name }}</span></td> -->
-            <td>
-              <buttton class="btn btn-rounded btn-primary" (click)="getData(prod)">Edit Product</buttton>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+        <div class="card shadow-lg card-body">
+            <table datatable [dtOptions]="dtOptions" style="width: 100% !important;"
+                   class="table-striped table-hover table-bordered">
+                <thead class="bg-base-color text-white text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody *ngIf="products?.length != 0">
+                <tr *ngFor="let prod of products" class="text-center">
+                    <td>{{ prod.id }}</td>
+                    <td>{{ prod.name }}</td>
+                    <td>{{ prod.category.name }}</td>
+                    <td>{{ prod.price }}</td>
+                    <!-- <td><span *ngFor="let cat of prod.category" class="badge badge-pill bg-dark text-white"
+                              style="margin-right: 10px">{{ cat.name }}</span></td> -->
+                    <td>
+                        <buttton class="btn btn-rounded btn-primary" (click)="getProductById(prod.id)">Edit Product
+                        </buttton>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
+</div>
