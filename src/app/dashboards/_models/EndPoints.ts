@@ -24,4 +24,7 @@ export class EndPoints {
 
   public readonly getUsersForAdmin = this.baseUrl + 'api/user/all/forAdmin/';
 
+  public readonly updateUser = this.baseUrl + 'api/user/update/';
+  
+
 }

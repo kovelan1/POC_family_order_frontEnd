@@ -24,12 +24,14 @@ export class UserComponent implements OnInit {
     dtOptions: DataTables.Settings = {};
     regions: any;
     users: any;
+    user:any;
     admins: any;
     customers: any;
     parentCategories: any;
     region: any;
     adminContainer: string;
     customerContainer: string;
+    updateContainer: string;
 
     constructor(
         private apiService: ApiManagerService,
@@ -42,7 +44,7 @@ export class UserComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
+        this.updateContainer = 'hidden';
         this.getAllRegions();
         const that = this;
 
@@ -191,6 +193,30 @@ export class UserComponent implements OnInit {
             }
         );
 
+    }
+
+    getUserById(id:any){
+        this.user = this.users.filter(u => u.id==id)[0];
+        this.updateContainer = 'show';
+
+    }
+
+    updateUser(id:any, name:String, userName:String){
+        const data = {
+            'name': name,
+            'userName': userName
+            
+        };
+        this.apiService.updateUser(id,data).subscribe((response: any) => {
+            this.spinner.hide();
+            console.log(response);
+            this.alertService.success('User Updated Successfully');
+        },
+        error => {
+            this.spinner.hide();
+            this.loggerService.log('error', error);
+        }
+    );
     }
 
     filterRole(role: any) {

@@ -54,6 +54,8 @@ export class ProductComponentComponent implements OnInit {
 
 
     createProduct(name: string, price: number, categoryID: number) {
+        console.log(categoryID);
+        
         this.spinner.show();
         const data = {
             'name': name,
@@ -151,7 +153,7 @@ export class ProductComponentComponent implements OnInit {
         console.log(catId);
 
         const filterResult = this.parentCategories.filter(cate => {
-            return cate.id === catId;
+            return cate.id == catId;
         });
 
         this.category = filterResult[0].childCategory;
