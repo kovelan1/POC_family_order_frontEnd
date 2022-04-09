@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  base_url: 'http://localhost:8081/',
+  base_url: 'http://localhost:8080/',
   base_url_2: 'http://localhost:8080/',
   host: 'https://app.portasigma.com',
   // base_url: 'http://docsigner-env.eba-t6iup3pb.us-west-2.elasticbeanstalk.com/',

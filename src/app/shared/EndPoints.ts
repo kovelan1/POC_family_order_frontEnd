@@ -11,6 +11,7 @@ export class EndPoints {
 
   public readonly createReg = this.baseUrl + 'api/region/create';
   public readonly getReg = this.baseUrl + 'api/region/get/all';
+  public readonly getRegAll = this.baseUrl + 'api/region/all';
   public readonly updateReg = this.baseUrl + 'api/region/update/';
 
   public readonly createProduct = this.baseUrl + 'api/product/create';
