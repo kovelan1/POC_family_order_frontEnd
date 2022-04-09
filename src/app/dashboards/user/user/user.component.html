@@ -36,6 +36,38 @@
     </div>
 </div>
 
+<div class="row {{ updateContainer}}" *ngIf="user != null">
+    <div class="col-sm-12">
+        <div class="card shadow-lg card-body">
+            <div class="form-group row">
+                <div class="col-sm-12"><p>Update User</p></div>
+                <div class="col-sm-4 mb-3">
+                    <input class="form-control" placeholder="Name..." value="{{user.name}}"
+                           #user_name_update>
+                    <!-- <input class="form-control hidden" value="{{product.category.id}}" #cat_id_update> -->
+                </div>
+                <div class="col-sm-2 mb-3">
+                    <input class="form-control" placeholder="Price..." value="{{user.username}}"
+                           #user_username_update>
+                </div>
+                <div class="col-sm-3 mb-2">
+                   
+                </div>
+                <div class="col-sm-3 mb-2">
+                    
+                </div>
+
+                <div class="col-sm-2 mb-3">
+                    <button class="btn bg-base-color2 btn-rounded text-white"
+                            (click)="updateUser(user.id,user_name_update.value, user_username_update.value)">
+                        <strong>Update User</strong>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
 
     <div class="col-sm-12">
@@ -60,6 +92,7 @@
                     <th> Username</th>
                     <th>Role</th>
                     <th>Region</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody *ngIf="users?.length != 0">
@@ -68,7 +101,7 @@
                     <td>{{ user.name }}</td>
                     <td>{{ user.username }}</td>
                     <td>
-                <span *ngFor="let role of user.roles" class="badge badge-pill bg-dark text-white"
+                        <span *ngFor="let role of user.roles" class="badge badge-pill bg-dark text-white"
                       style="margin-right: 10px"> {{role.name}}</span>
 
                     </td>
@@ -76,6 +109,10 @@
                         <div *ngIf="user.region !=null">
                             {{user.region.name}}
                         </div>
+                    </td>
+                    <td>
+                        <buttton class="btn btn-rounded btn-primary" (click)="getUserById(user.id)">Edit User
+                        </buttton>
                     </td>
                 </tr>
                 </tbody>

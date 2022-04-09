@@ -19,7 +19,7 @@ export class ApiManagerService {
         );
     }
 
-    public update(body, id): any {
+    public update(id, body): any {
         return this.http.put(this.endpoints.updateOrder + id, body).pipe(
             catchError(this.handleError),
         );

@@ -51,6 +51,8 @@ export class ProductComponentComponent implements OnInit {
 
 
     createProduct(name: string, price: number, categoryID: number) {
+        console.log(categoryID);
+        
         this.spinner.show();
         const data = {
             'name': name,

@@ -51,6 +51,55 @@
     </div>
 </div>
 
+
+<div class="row {{ updateContainer}}" *ngIf="selectedOrder !=null">
+    <div class="col-sm-12">
+        <div class="card shadow-lg card-body">
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <p>Update Order</p>
+                </div>
+            </div>
+            <div [formGroup]="productForm_update">
+                <div formArrayName="selectedProducts_u">
+                    <div class="form-group row" *ngFor="let produ of selectedProducts_u().controls; let j=index"
+                         [formGroupName]="j">
+                        <div class="col-sm-4 mb-3">
+                            <select class="form-control" formControlName="product_id">
+                                <option value="" disabled selected>Select Product</option>
+                                <option *ngFor="let product of products"
+                                        value="{{product.id}}">{{ product.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4 mb-3">
+                            <input class="form-control" placeholder="Quntity" formControlName="qty"
+                                   (change)="setProductTotal_u(produ,j)" (keyup)="setProductTotal_u(produ,j)">
+                        </div>
+                        <div class="col-sm-2 mb-3">
+                            <input class="form-control" disabled placeholder="Price..."
+                                   value="{{selectedProducts_u().value[j].price}}"
+                                   formControlName="price">
+                        </div>
+                        <div class="col-sm-2 mb-3">
+                            <button class="btn bg-base-color btn-rounded text-white" (click)="removeProduct_u(j)">
+                                remove product
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn mr-3 bg-base-color btn-rounded text-white" (click)="addProduct_u()">
+                        add product
+                    </button>
+                    <button class="btn bg-base-color2 btn-rounded text-white" (click)="updateOrder(selectedOrder.id)">
+                        place order
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-sm-3">
         <select class="form-control" #regionId>
@@ -110,7 +159,7 @@
                 <tbody *ngIf="orders?.length != 0">
                 <tr *ngFor="let order of orders" class="text-center">
                     <td>{{ order.id }}</td>
-                    <td>{{order.order_date}}</td>
+                    <td>{{order.order_date | date: 'yyyy-MM-dd'}}</td>
                     <td>
                         <table style="width: 100% !important;" class="table table-hover table-striped">
                             <tr *ngFor="let prod_order of order.orderedProducts">
@@ -123,7 +172,7 @@
                     <td>{{order.total}}</td>
                     <td>{{order.region.name}}</td>
                     <td>
-                        <buttton class="btn btn-rounded btn-primary">Edit Order</buttton>
+                        <buttton class="btn btn-rounded btn-primary" (click)="updateProductsFrom(order)">Edit Order</buttton>
                     </td>
                 </tr>
                 </tbody>

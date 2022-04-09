@@ -29,7 +29,7 @@
 
                 <div class="col-sm-2 mb-3">
                     <button class="btn bg-base-color2 btn-rounded text-white"
-                            (click)="createProduct(prod_name.value,prod_price.value, sub_cat.value)">
+                            (click)="createProduct(prod_name.value,prod_price.value, sub_cat.value != 0 ? sub_cat.value : parent_cat.value )">
                         <strong>Add Product</strong>
                     </button>
                 </div>
@@ -57,7 +57,7 @@
                             (change)="getSubcatByParent(parent_cat_update.value)">
                         <!-- <option value="0" disabled selected>Select Parent Category</option> -->
                         <option *ngFor="let parentCat of parentCategories"
-                                [selected]="product.parent_cat.id !=null && parentCat.id===product.parent_cat.id"
+                                [selected]="product.parent_cat !=null ? parentCat.id==product.parent_cat.id  : parentCat.id==product.product_details.category.id"
                                 value="{{parentCat.id}}">{{ parentCat.name}}</option>
                     </select>
                 </div>
@@ -65,14 +65,14 @@
                     <select class="form-control" #sub_cat_update>
                         <option value="0" disabled selected>Select Sub Category</option>
                         <option *ngFor="let subCat of category"
-                                [selected]="subCat.id===product.product_details.category.id"
+                                [selected]="product.parent_cat !=null ? subCat.id==product.product_details.category.id : false"
                                 value="{{subCat.id}}">{{ subCat.name}}</option>
                     </select>
                 </div>
 
                 <div class="col-sm-2 mb-3">
                     <button class="btn bg-base-color2 btn-rounded text-white"
-                            (click)="updateProduct(product.product_details.id,prod_name_update.value, prod_price_update.value,sub_cat_update.value)">
+                            (click)="updateProduct(product.product_details.id,prod_name_update.value, prod_price_update.value,sub_cat_update.value != 0 ? sub_cat_update.value : parent_cat_update.value)">
                         <strong>Update Product</strong>
                     </button>
                 </div>

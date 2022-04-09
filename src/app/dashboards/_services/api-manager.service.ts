@@ -67,6 +67,13 @@ export class ApiManagerService {
     );
   }
 
+  public updateUser(id,data):any{
+    return this.http.put(this.endpoints.updateUser+id, data).pipe(
+      catchError(this.handleError),
+    );
+  }
+  
+
   public getRegions():any{
     return this.http.get(this.endpoints.getRegions).pipe(
       catchError(this.handleError),
