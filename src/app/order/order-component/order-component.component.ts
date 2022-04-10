@@ -52,8 +52,8 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
     product: any;
     updateContainer: string;
     productForm: FormGroup;
-    productForm_update:FormGroup;
-    selectedOrder:any;
+    productForm_update: FormGroup;
+    selectedOrder: any;
 
     constructor(
         private apiService: ApiManagerService,
@@ -69,7 +69,7 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
             selectedProducts: this.fb.array([]),
         });
 
-        this.productForm_update=this.fb_u.group({
+        this.productForm_update = this.fb_u.group({
             selectedProducts_u: this.fb_u.array([]),
         });
 
@@ -77,13 +77,13 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
-        
+
         this.addProduct();
         this.getAllProducts();
         this.getAllRegions();
         this.updateContainer = 'hidden';
 
-        this.loadDatatables('r_id=1&from=' + '2020-01-01' + '&to=' +    formatDate(new Date(), 'yyyy-MM-dd', 'en'));
+        this.loadDatatables('r_id=1&from=' + '2020-01-01' + '&to=' + formatDate(new Date(), 'yyyy-MM-dd', 'en'));
     }
 
     ngAfterViewInit(): void {
@@ -143,7 +143,7 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
         );
     }
 
-    updateOrder(id:any){
+    updateOrder(id: any) {
 
         this.spinner.show();
         const data = {
@@ -152,7 +152,7 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
             'rid': localStorage.getItem('region_id'),
             'uid': localStorage.getItem('user_id'),
         };
-        this.apiService.update(id,data).subscribe((response: any) => {
+        this.apiService.update(id, data).subscribe((response: any) => {
                 this.spinner.hide();
 
                 this.alertService.success('Order Updated Successfully');
@@ -214,28 +214,28 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
         });
     }
 
-    newSelectProduct_u(products:any ): FormGroup {
-       
+    newSelectProduct_u(products: any): FormGroup {
+
         return this.fb_u.group({
-            
-                    product_id: products!=null? products.product.id : '',
-                    qty: products!=null?  products.qty : '',
-                    price:  products!=null? products.price : '',
-                });
-        
+
+            product_id: products != null ? products.product.id : '',
+            qty: products != null ? products.qty : '',
+            price: products != null ? products.price : '',
+        });
+
     }
 
-    updateProductsFrom(order:any){
+    updateProductsFrom(order: any) {
         this.updateContainer = 'show';
-        this.selectedOrder=order;
+        this.selectedOrder = order;
         console.log(order.orderedProducts.length);
-        
 
-        for(var i=0; i<order.orderedProducts.length; i++){
+
+        for (let i = 0; i < order.orderedProducts.length; i++) {
             this.selectedProducts_u().push(this.newSelectProduct_u(order.orderedProducts[i]));
         }
 
-        
+
     }
 
     addProduct() {
@@ -260,24 +260,16 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
         return sum;
     }
 
-<<<<<<< HEAD
-    filterBy(regionId: string) {
-
-        const from = this.fromDate.year + '-' + this.fromDate.month + '-' + this.fromDate.day;
-        const to = this.toDate.year + '-' + this.toDate.month + '-' + this.toDate.day;
-
-        console.log(from);
-        console.log(to);
-
-=======
     getTotalAmount_u() {
         let sum = 0;
         this.productForm_update.value.selectedProducts_u.forEach(element => sum += element.price);
         return sum;
     }
 
-    filterByRegion(value: string) {
->>>>>>> main
+    filterBy(regionId: string) {
+        const from = this.fromDate.year + '-' + this.fromDate.month + '-' + this.fromDate.day;
+        const to = this.toDate.year + '-' + this.toDate.month + '-' + this.toDate.day;
+
         this.spinner.show();
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
             console.log(regionId);
