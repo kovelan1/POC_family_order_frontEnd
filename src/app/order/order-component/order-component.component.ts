@@ -225,16 +225,15 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
 
     }
 
+
     updateProductsFrom(order: any) {
+        this.selectedProducts_u().clear();
         this.updateContainer = 'show';
         this.selectedOrder = order;
         console.log(order.orderedProducts.length);
-
-
         for (let i = 0; i < order.orderedProducts.length; i++) {
             this.selectedProducts_u().push(this.newSelectProduct_u(order.orderedProducts[i]));
         }
-
 
     }
 
