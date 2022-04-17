@@ -42,11 +42,13 @@
             <div class="form-group row">
                 <div class="col-sm-12"><p>Update User</p></div>
                 <div class="col-sm-4 mb-3">
+                    <label>Name</label>
                     <input class="form-control" placeholder="Name..." value="{{user.name}}"
                            #user_name_update>
                     <!-- <input class="form-control hidden" value="{{product.category.id}}" #cat_id_update> -->
                 </div>
                 <div class="col-sm-2 mb-3">
+                    <label>User Name</label>
                     <input class="form-control" placeholder="Price..." value="{{user.username}}"
                            #user_username_update>
                 </div>
@@ -75,16 +77,24 @@
             <div class="col-sm-6">
                 <h3>Users</h3>
             </div>
-            <div class="col-sm-6 {{ adminContainer}}">
-                <select class="form-control" #user_role_list (change)="filterRole(user_role_list.value)">
+            <div class="row {{ adminContainer}}">
+                <div class="col-sm-6">
+                    <select class="form-control" #user_role_list >
 
-                    <option value="ROLE_ADMIN" selected>Admin</option>
-                    <option value="ROLE_CUSTOMER">Customer</option>
-                </select>
+                        <option value="2" selected>Admin</option>
+                        <option value="3">Customer</option>
+                    </select>
+                </div>
+                <div class="col-sm-6" (click)="filterByRole(user_role_list.value)">
+                    <button class="btn btn-primary" ><i class="fa fa-filter"></i> Filter</button>
+                </div>
+                
+
+                
             </div>
             <br>
             <table datatable [dtOptions]="dtOptions" style="width: 100% !important;"
-                   class="table-striped table-hover table-bordered">
+                   class="table-striped table-hover table-bordered" [dtTrigger]="dtTrigger">
                 <thead class="bg-base-color text-white text-center">
                 <tr>
                     <th>ID</th>
@@ -111,8 +121,8 @@
                         </div>
                     </td>
                     <td>
-                        <buttton class="btn btn-rounded btn-primary" (click)="getUserById(user.id)">Edit User
-                        </buttton>
+                        <button class="btn btn-rounded btn-primary" (click)="getUserById(user.id)">Edit User
+                        </button>
                     </td>
                 </tr>
                 </tbody>

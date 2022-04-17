@@ -1,6 +1,8 @@
 import {HttpClient} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import { DataTableDirective } from 'angular-datatables';
 import {NgxSpinnerService} from 'ngx-spinner';
+import { Subject } from 'rxjs';
 import {LoggerService} from 'src/app/shared/logger.service';
 import {AlertService} from '../../_alert/alert.service';
 import {EndPoints} from '../../_models/EndPoints';
@@ -20,8 +22,11 @@ class DataTablesResponse {
     styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-
+    @ViewChild(DataTableDirective, {static: false})
+    dtElement: DataTableDirective;
     dtOptions: DataTables.Settings = {};
+    dtTrigger: Subject<any> = new Subject();
+
     regions: any;
     users: any;
     user:any;
@@ -46,6 +51,80 @@ export class UserComponent implements OnInit {
     ngOnInit(): void {
         this.updateContainer = 'hidden';
         this.getAllRegions();
+        this.getAllUsers(2);
+        // const that = this;
+
+        // this.dtOptions = {
+        //     pagingType: 'simple_numbers',
+        //     pageLength: 5,
+        //     serverSide: true,
+        //     processing: true,
+        //     ajax: (dataTablesParameters: any, callback) => {
+        //         that.http.post<DataTablesResponse>(this.getuserBasedQuery(),
+        //             dataTablesParameters, {}
+        //         ).subscribe(resp => {
+        //             that.users = resp.data;
+        //             if (localStorage.getItem('user_roles') === 'ROLE_ADMIN') {
+        //                 this.users = this.users.filter(u => u.roles.some(r => r.name === 'ROLE_CUSTOMER'));
+        //             }
+        //             console.log(resp.data);
+
+        //             callback({
+        //                 recordsTotal: resp.recordsTotal,
+        //                 recordsFiltered: resp.recordsFiltered,
+        //                 data: []
+        //             });
+        //         });
+        //     },
+        //     searching: false,
+        //     columns: [
+        //         {data: 'id'},
+        //         {data: 'name'},
+        //         {data: 'region'},
+        //         {data: 'roles'}],
+        // };
+    }
+
+    ngAfterViewInit(): void {
+        this.dtTrigger.next();
+    }
+
+    getByRole(role:any) {
+        console.log("comming")
+        this.users=[];
+        const that = this;
+        this.dtOptions = {
+            pagingType: 'simple_numbers',
+            pageLength: 5,
+            serverSide: true,
+            processing: true,
+            ajax: (dataTablesParameters: any, callback) => {
+                that.http.post<DataTablesResponse>(this.endpoints.getUsersByRole + '/' + role,
+                    dataTablesParameters, {}
+                ).subscribe(resp => {
+                    that.users = resp.data;
+                    console.log(resp.data);
+
+                    callback({
+                        recordsTotal: resp.recordsTotal,
+                        recordsFiltered: resp.recordsFiltered,
+                        data: []
+                    });
+                });
+            },
+            searching: false,
+            columns: [
+                {data: 'id'},
+                {data: 'name'},
+                {data: 'region'},
+                {data: 'roles'}],
+        };
+    }
+
+    getAllUsers(role) {
+
+        // this.updateContainer = 'hidden';
+        // this.getAllRegions();
         const that = this;
 
         this.dtOptions = {
@@ -54,7 +133,7 @@ export class UserComponent implements OnInit {
             serverSide: true,
             processing: true,
             ajax: (dataTablesParameters: any, callback) => {
-                that.http.post<DataTablesResponse>(this.getuserBasedQuery(),
+                that.http.post<DataTablesResponse>(this.getuserBasedQuery(role),
                     dataTablesParameters, {}
                 ).subscribe(resp => {
                     that.users = resp.data;
@@ -77,79 +156,15 @@ export class UserComponent implements OnInit {
                 {data: 'region'},
                 {data: 'roles'}],
         };
-    }
-
-    getByRole(role) {
-        const that = this;
-        this.dtOptions = {
-            pagingType: 'simple_numbers',
-            pageLength: 5,
-            serverSide: true,
-            processing: true,
-            ajax: (dataTablesParameters: any, callback) => {
-                that.http.post<DataTablesResponse>('api/user/all/forAdmin?roleid = ' + role,
-                    dataTablesParameters, {}
-                ).subscribe(resp => {
-                    that.admins = resp.data;
-                    console.log(resp.data);
-
-                    callback({
-                        recordsTotal: resp.recordsTotal,
-                        recordsFiltered: resp.recordsFiltered,
-                        data: []
-                    });
-                });
-            },
-            searching: false,
-            columns: [
-                {data: 'id'},
-                {data: 'name'},
-                {data: 'region'},
-                {data: 'roles'}],
-        };
-    }
-
-    getAllCustomers() {
-
-        const that = this;
-
-        this.dtOptions = {
-            pagingType: 'simple_numbers',
-            pageLength: 5,
-            serverSide: true,
-            processing: true,
-            ajax: (dataTablesParameters: any, callback) => {
-                that.http.post<DataTablesResponse>(this.getuserBasedQuery() + 'customer',
-                    dataTablesParameters, {}
-                ).subscribe(resp => {
-                    that.customers = resp.data;
-                    console.log(resp.data);
-
-                    callback({
-                        recordsTotal: resp.recordsTotal,
-                        recordsFiltered: resp.recordsFiltered,
-                        data: []
-                    });
-                });
-            },
-            searching: false,
-            columns: [
-                {data: 'id'},
-                {data: 'name'},
-                {data: 'region'},
-                {data: 'roles'}],
-
-
-        };
 
 
     }
 
-    getuserBasedQuery() {
+    getuserBasedQuery(role:any) {
         if (localStorage.getItem('user_roles') === 'ROLE_SUPER_ADMIN') {
             this.adminContainer = 'show';
             this.customerContainer = 'show';
-            return this.endpoints.getUsersByRole;
+            return this.endpoints.getUsersByRole + '/' + role;
         } else if (localStorage.getItem('user_roles') === 'ROLE_ADMIN') {
             this.adminContainer = 'hide';
             this.customerContainer = 'show';
@@ -230,6 +245,21 @@ export class UserComponent implements OnInit {
 
     customerFilter() {
         this.admins = this.users.filter(u => u.roles.some(r => r.name == 'ROLE_ADMIN'));
+    }
+
+    filterByRole(value: any) {
+        this.spinner.show();
+        this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            console.log(value);
+            // Destroy the table first
+            dtInstance.destroy();
+            // Call the dtTrigger to rerender again
+            this.getAllUsers(value);
+            setTimeout(() => {
+                this.dtTrigger.next();
+                this.spinner.hide();
+            }, 500);
+        });
     }
 
 }
