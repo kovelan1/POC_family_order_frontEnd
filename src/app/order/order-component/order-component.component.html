@@ -60,11 +60,12 @@
                     <p>Update Order</p>
                 </div>
             </div>
-            <div [formGroup]="productForm_update">
+            <div [formGroup]="productForm_update" >
                 <div formArrayName="selectedProducts_u">
                     <div class="form-group row" *ngFor="let produ of selectedProducts_u().controls; let j=index"
                          [formGroupName]="j">
                         <div class="col-sm-4 mb-3">
+                            <label >Product</label>
                             <select class="form-control" formControlName="product_id">
                                 <option value="" disabled selected>Select Product</option>
                                 <option *ngFor="let product of products"
@@ -72,10 +73,12 @@
                             </select>
                         </div>
                         <div class="col-sm-4 mb-3">
+                            <label>Quantity</label>
                             <input class="form-control" placeholder="Quntity" formControlName="qty"
                                    (change)="setProductTotal_u(produ,j)" (keyup)="setProductTotal_u(produ,j)">
                         </div>
                         <div class="col-sm-2 mb-3">
+                            <label>Total Price</label>
                             <input class="form-control" disabled placeholder="Price..."
                                    value="{{selectedProducts_u().value[j].price}}"
                                    formControlName="price">
@@ -100,7 +103,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row {{filterContainer}}" *ngIf="filterContainer == 'show'">
     <div class="col-sm-3">
         <select class="form-control" #regionId>
             <option selected disabled value="0">Select a region</option>

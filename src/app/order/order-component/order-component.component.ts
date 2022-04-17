@@ -42,6 +42,8 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
     selectedProduct: any[];
     product: any;
     updateContainer: string;
+    filterContainer:string;
+    
     productForm: FormGroup;
     productForm_update:FormGroup;
     selectedOrder:any;
@@ -73,6 +75,8 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
         this.getAllProducts();
         this.getAllRegions();
         this.updateContainer = 'hidden';
+        this.filterContainer = 'hidden';
+        
         this.loadDatatables('r_id=1');
     }
 
@@ -85,11 +89,11 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
 
         this.dtOptions = {
             pagingType: 'simple_numbers',
-            pageLength: 1,
+            pageLength: 5,
             serverSide: true,
             processing: true,
             ajax: (dataTablesss: any, callback) => {
-                that.http.post<DataTablesResponse>(this.endpoints.getOrders + '?' + param, dataTablesss, {}
+                that.http.post<DataTablesResponse>(this.getuserBasedQuery(param), dataTablesss, {}
                 ).subscribe(resp => {
                     that.orders = resp.data;
                     console.log(resp.data);
@@ -109,6 +113,19 @@ export class OrderComponentComponent implements OnInit, AfterViewInit {
                 {data: 'orderedProducts'},
             ]
         };
+    }
+
+    getuserBasedQuery(param) {
+        if (localStorage.getItem('user_roles') === 'ROLE_SUPER_ADMIN') {
+            this.filterContainer='show';
+            return this.endpoints.getOrders + '?' + param
+        } else if (localStorage.getItem('user_roles') === 'ROLE_ADMIN') {
+            this.filterContainer = 'hidden';
+            return this.endpoints.getOrdersByregion+localStorage.getItem('region_id');
+        }else if (localStorage.getItem('user_roles') === 'ROLE_CUSTOMER') {
+            this.filterContainer = 'hidden';
+            return this.endpoints.getOrdersByCustomer + localStorage.getItem('user_id');
+        }
     }
 
     createOrder() {
