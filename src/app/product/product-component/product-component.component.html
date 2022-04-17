@@ -44,15 +44,18 @@
             <div class="form-group row">
                 <div class="col-sm-12"><p>Update Product</p></div>
                 <div class="col-sm-4 mb-3">
+                    <label>Name</label>
                     <input class="form-control" placeholder="Product Name..." value="{{product.product_details.name}}"
                            #prod_name_update>
                     <!-- <input class="form-control hidden" value="{{product.category.id}}" #cat_id_update> -->
                 </div>
                 <div class="col-sm-2 mb-3">
+                    <label>Price</label>
                     <input class="form-control" placeholder="Price..." value="{{product.product_details.price}}"
                            #prod_price_update>
                 </div>
                 <div class="col-sm-3 mb-2">
+                    <label>Parent Category</label>
                     <select class="form-control" #parent_cat_update
                             (change)="getSubcatByParent(parent_cat_update.value)">
                         <!-- <option value="0" disabled selected>Select Parent Category</option> -->
@@ -62,6 +65,7 @@
                     </select>
                 </div>
                 <div class="col-sm-3 mb-2">
+                    <label>Sub Category</label>
                     <select class="form-control" #sub_cat_update>
                         <option value="0" disabled selected>Select Sub Category</option>
                         <option *ngFor="let subCat of category"
